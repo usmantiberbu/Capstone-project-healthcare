@@ -1,0 +1,80 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:AD-{####}",
+ "creation": "2024-03-19 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "department",
+  "allow_appointment_booking",
+  "allow_medical_history_view",
+  "allow_document_upload"
+ ],
+ "fields": [
+  {
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "label": "Department",
+   "options": "Department",
+   "reqd": 1
+  },
+  {
+   "fieldname": "allow_appointment_booking",
+   "fieldtype": "Check",
+   "label": "Allow Appointment Booking",
+   "default": 1
+  },
+  {
+   "fieldname": "allow_medical_history_view",
+   "fieldtype": "Check",
+   "label": "Allow Medical History View",
+   "default": 1
+  },
+  {
+   "fieldname": "allow_document_upload",
+   "fieldtype": "Check",
+   "label": "Allow Document Upload",
+   "default": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-03-19 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Healthcare",
+ "name": "Allowed Department",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Healthcare Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 0,
+   "export": 0,
+   "print": 0,
+   "read": 1,
+   "report": 0,
+   "role": "Healthcare User",
+   "share": 0,
+   "write": 0
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+} 

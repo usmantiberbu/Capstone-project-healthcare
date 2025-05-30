@@ -1,0 +1,40 @@
+.healthcare-patient-form {
+    padding: 20px;
+}
+
+.healthcare-patient-form .form-section {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+
+.healthcare-patient-form .form-section h4 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+.healthcare-patient-form .form-group {
+    margin-bottom: 15px;
+}
+
+.healthcare-patient-form .form-control {
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+}
+
+.healthcare-patient-form .form-control:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+}
+
+.healthcare-patient-form .btn-primary {
+    background-color: #4a90e2;
+    border-color: #4a90e2;
+}
+
+.healthcare-patient-form .btn-primary:hover {
+    background-color: #357abd;
+    border-color: #357abd;
+} 

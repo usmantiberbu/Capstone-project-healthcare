@@ -1,0 +1,191 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:APT-{####}",
+ "creation": "2024-03-19 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "template_name",
+  "template_details_section",
+  "appointment_type",
+  "department",
+  "duration",
+  "description",
+  "instructions",
+  "pricing_section",
+  "base_price",
+  "insurance_coverage",
+  "payment_required",
+  "notification_section",
+  "send_reminders",
+  "reminder_days",
+  "reminder_message",
+  "permissions_section",
+  "allowed_roles"
+ ],
+ "fields": [
+  {
+   "fieldname": "template_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Template Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "template_details_section",
+   "fieldtype": "Section Break",
+   "label": "Template Details"
+  },
+  {
+   "fieldname": "appointment_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Appointment Type",
+   "options": "New Visit\nFollow Up\nConsultation\nProcedure\nEmergency",
+   "reqd": 1
+  },
+  {
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "label": "Department",
+   "options": "Medical Department",
+   "reqd": 1
+  },
+  {
+   "fieldname": "duration",
+   "fieldtype": "Int",
+   "label": "Duration (minutes)",
+   "default": 30,
+   "reqd": 1
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "instructions",
+   "fieldtype": "Text Editor",
+   "label": "Instructions for Patient"
+  },
+  {
+   "fieldname": "pricing_section",
+   "fieldtype": "Section Break",
+   "label": "Pricing"
+  },
+  {
+   "fieldname": "base_price",
+   "fieldtype": "Currency",
+   "label": "Base Price"
+  },
+  {
+   "fieldname": "insurance_coverage",
+   "fieldtype": "Check",
+   "label": "Insurance Coverage Available"
+  },
+  {
+   "fieldname": "payment_required",
+   "fieldtype": "Check",
+   "label": "Payment Required Before Appointment"
+  },
+  {
+   "fieldname": "notification_section",
+   "fieldtype": "Section Break",
+   "label": "Notifications"
+  },
+  {
+   "fieldname": "send_reminders",
+   "fieldtype": "Check",
+   "label": "Send Reminders",
+   "default": 1
+  },
+  {
+   "fieldname": "reminder_days",
+   "fieldtype": "MultiSelect",
+   "label": "Send Reminders (Days Before)",
+   "options": "1\n2\n3\n7",
+   "depends_on": "send_reminders"
+  },
+  {
+   "fieldname": "reminder_message",
+   "fieldtype": "Text Editor",
+   "label": "Reminder Message Template",
+   "depends_on": "send_reminders"
+  },
+  {
+   "fieldname": "permissions_section",
+   "fieldtype": "Section Break",
+   "label": "Permissions"
+  },
+  {
+   "fieldname": "allowed_roles",
+   "fieldtype": "MultiSelect",
+   "label": "Allowed Roles",
+   "options": "Healthcare Administrator\nHealthcare Manager\nHealthcare User\nPatient"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-03-19 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Healthcare",
+ "name": "Appointment Template",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Healthcare Administrator",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Healthcare Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 0,
+   "export": 0,
+   "print": 1,
+   "read": 1,
+   "report": 0,
+   "role": "Healthcare User",
+   "share": 0,
+   "write": 0
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 0,
+   "export": 0,
+   "print": 0,
+   "read": 1,
+   "report": 0,
+   "role": "Patient",
+   "share": 0,
+   "write": 0
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+} 

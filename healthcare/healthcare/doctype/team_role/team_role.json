@@ -1,0 +1,126 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:TR-{####}",
+ "creation": "2024-03-19 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "role_name",
+  "description",
+  "permissions",
+  "can_view_patients",
+  "can_edit_patients",
+  "can_view_schedule",
+  "can_edit_schedule",
+  "can_view_medical_records",
+  "can_edit_medical_records",
+  "can_manage_appointments",
+  "can_manage_team"
+ ],
+ "fields": [
+  {
+   "fieldname": "role_name",
+   "fieldtype": "Data",
+   "label": "Role Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "permissions",
+   "fieldtype": "Section Break",
+   "label": "Permissions"
+  },
+  {
+   "fieldname": "can_view_patients",
+   "fieldtype": "Check",
+   "label": "Can View Patients",
+   "default": 1
+  },
+  {
+   "fieldname": "can_edit_patients",
+   "fieldtype": "Check",
+   "label": "Can Edit Patients",
+   "default": 0
+  },
+  {
+   "fieldname": "can_view_schedule",
+   "fieldtype": "Check",
+   "label": "Can View Schedule",
+   "default": 1
+  },
+  {
+   "fieldname": "can_edit_schedule",
+   "fieldtype": "Check",
+   "label": "Can Edit Schedule",
+   "default": 0
+  },
+  {
+   "fieldname": "can_view_medical_records",
+   "fieldtype": "Check",
+   "label": "Can View Medical Records",
+   "default": 1
+  },
+  {
+   "fieldname": "can_edit_medical_records",
+   "fieldtype": "Check",
+   "label": "Can Edit Medical Records",
+   "default": 0
+  },
+  {
+   "fieldname": "can_manage_appointments",
+   "fieldtype": "Check",
+   "label": "Can Manage Appointments",
+   "default": 0
+  },
+  {
+   "fieldname": "can_manage_team",
+   "fieldtype": "Check",
+   "label": "Can Manage Team",
+   "default": 0
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-03-19 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Healthcare",
+ "name": "Team Role",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Healthcare Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 0,
+   "export": 0,
+   "print": 0,
+   "read": 1,
+   "report": 0,
+   "role": "Healthcare User",
+   "share": 0,
+   "write": 0
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+} 

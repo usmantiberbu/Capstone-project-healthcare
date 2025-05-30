@@ -1,0 +1,595 @@
+{% extends "templates/web.html" %}
+
+{% block page_content %}
+<div class="doctor-workspace">
+    <!-- Header Section -->
+    <div class="workspace-header">
+        <h1>Doctor Workspace</h1>
+        <div class="user-info">
+            <span>Welcome, {{ frappe.get_doc("Doctor", frappe.session.user).first_name }}</span>
+            <button class="btn btn-danger" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="workspace-tabs">
+        <button class="tab-btn active" onclick="showTab('dashboard')">Dashboard</button>
+        <button class="tab-btn" onclick="showTab('schedule')">Schedule</button>
+        <button class="tab-btn" onclick="showTab('queue')">Patient Queue</button>
+        <button class="tab-btn" onclick="showTab('team')">Team</button>
+    </div>
+
+    <!-- Dashboard Tab -->
+    <div class="tab-content" id="dashboard-tab">
+        <div class="metrics-grid">
+            <!-- Appointments Completed -->
+            <div class="metric-card">
+                <h3>Appointments Completed</h3>
+                <div class="metric-value" id="appointments-completed">0</div>
+                <div class="metric-trend" id="appointments-trend"></div>
+            </div>
+
+            <!-- Patient Satisfaction -->
+            <div class="metric-card">
+                <h3>Patient Satisfaction</h3>
+                <div class="metric-value" id="patient-satisfaction">0%</div>
+                <div class="metric-trend" id="satisfaction-trend"></div>
+            </div>
+
+            <!-- Wait Time -->
+            <div class="metric-card">
+                <h3>Average Wait Time</h3>
+                <div class="metric-value" id="wait-time">0 min</div>
+                <div class="metric-trend" id="wait-time-trend"></div>
+            </div>
+
+            <!-- Revenue -->
+            <div class="metric-card">
+                <h3>Revenue</h3>
+                <div class="metric-value" id="revenue">$0</div>
+                <div class="metric-trend" id="revenue-trend"></div>
+            </div>
+        </div>
+
+        <!-- Team Performance -->
+        <div class="team-performance">
+            <h2>Team Performance</h2>
+            <div class="performance-metrics">
+                <div class="metric">
+                    <label>Total Appointments</label>
+                    <span id="team-total-appointments">0</span>
+                </div>
+                <div class="metric">
+                    <label>Completed Appointments</label>
+                    <span id="team-completed-appointments">0</span>
+                </div>
+                <div class="metric">
+                    <label>Average Satisfaction</label>
+                    <span id="team-satisfaction">0%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Schedule Tab -->
+    <div class="tab-content" id="schedule-tab" style="display: none;">
+        <div class="schedule-header">
+            <div class="date-navigation">
+                <button class="btn btn-secondary" onclick="previousWeek()">Previous</button>
+                <h2 id="current-week">Week of March 19, 2024</h2>
+                <button class="btn btn-secondary" onclick="nextWeek()">Next</button>
+            </div>
+            <button class="btn btn-primary" onclick="addSchedule()">Add Schedule</button>
+        </div>
+        <div class="schedule-grid" id="schedule-grid">
+            <!-- Schedule will be populated dynamically -->
+        </div>
+    </div>
+
+    <!-- Patient Queue Tab -->
+    <div class="tab-content" id="queue-tab" style="display: none;">
+        <div class="queue-header">
+            <h2>Current Patient Queue</h2>
+            <div class="queue-filters">
+                <select id="queue-status" onchange="filterQueue()">
+                    <option value="all">All Status</option>
+                    <option value="scheduled">Scheduled</option>
+                    <option value="in-progress">In Progress</option>
+                </select>
+            </div>
+        </div>
+        <div class="queue-list" id="patient-queue">
+            <!-- Queue will be populated dynamically -->
+        </div>
+    </div>
+
+    <!-- Team Tab -->
+    <div class="tab-content" id="team-tab" style="display: none;">
+        <div class="team-header">
+            <h2>Team Management</h2>
+            <button class="btn btn-primary" onclick="showAddMemberModal()">Add Team Member</button>
+        </div>
+        <div class="team-list" id="team-members">
+            <!-- Team members will be populated dynamically -->
+        </div>
+    </div>
+</div>
+
+<!-- Add Team Member Modal -->
+<div class="modal" id="add-member-modal">
+    <div class="modal-content">
+        <h2>Add Team Member</h2>
+        <form id="add-member-form">
+            <div class="form-group">
+                <label>Doctor</label>
+                <select class="form-control" id="team-member" required>
+                    <option value="">Select Doctor</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Role</label>
+                <select class="form-control" id="member-role" required>
+                    <option value="">Select Role</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Notes</label>
+                <textarea class="form-control" id="member-notes"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Member</button>
+            <button type="button" class="btn btn-secondary" onclick="hideAddMemberModal()">Cancel</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block style %}
+<style>
+.doctor-workspace {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.workspace-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.workspace-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    border: none;
+    background: #f0f0f0;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.tab-btn.active {
+    background: #007bff;
+    color: white;
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.metric-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.metric-value {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.metric-trend {
+    font-size: 14px;
+    color: #666;
+}
+
+.team-performance {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.performance-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.schedule-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.date-navigation {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.schedule-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.queue-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.queue-list {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.queue-item {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.team-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.team-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.team-member-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background: white;
+    width: 400px;
+    margin: 100px auto;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: #007bff;
+    color: white;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+}
+</style>
+{% endblock %}
+
+{% block script %}
+<script>
+// Tab Navigation
+function showTab(tabName) {
+    const tabs = document.getElementsByClassName('tab-content');
+    for (let tab of tabs) {
+        tab.style.display = 'none';
+    }
+    document.getElementById(`${tabName}-tab`).style.display = 'block';
+    
+    const buttons = document.getElementsByClassName('tab-btn');
+    for (let btn of buttons) {
+        btn.classList.remove('active');
+    }
+    event.target.classList.add('active');
+    
+    if (tabName === 'dashboard') {
+        loadMetrics();
+    } else if (tabName === 'schedule') {
+        loadSchedule();
+    } else if (tabName === 'queue') {
+        loadQueue();
+    } else if (tabName === 'team') {
+        loadTeam();
+    }
+}
+
+// Load Metrics
+function loadMetrics() {
+    frappe.call({
+        method: 'healthcare.healthcare.doctype.doctor_workspace_settings.doctor_workspace_settings.get_doctor_metrics',
+        args: { doctor: frappe.session.user },
+        callback: function(r) {
+            if (r.message) {
+                const metrics = r.message;
+                
+                // Update metric cards
+                document.getElementById('appointments-completed').textContent = metrics.appointments_completed;
+                document.getElementById('patient-satisfaction').textContent = `${metrics.patient_satisfaction}%`;
+                document.getElementById('wait-time').textContent = `${metrics.wait_time} min`;
+                document.getElementById('revenue').textContent = `$${metrics.revenue}`;
+                
+                // Update team performance
+                if (metrics.team_performance) {
+                    document.getElementById('team-total-appointments').textContent = metrics.team_performance.total_appointments;
+                    document.getElementById('team-completed-appointments').textContent = metrics.team_performance.completed_appointments;
+                    document.getElementById('team-satisfaction').textContent = `${metrics.team_performance.average_satisfaction}%`;
+                }
+            }
+        }
+    });
+}
+
+// Load Schedule
+function loadSchedule() {
+    frappe.call({
+        method: 'healthcare.healthcare.doctype.doctor_schedule.doctor_schedule.get_doctor_schedule',
+        args: { doctor: frappe.session.user },
+        callback: function(r) {
+            if (r.message) {
+                const scheduleGrid = document.getElementById('schedule-grid');
+                scheduleGrid.innerHTML = '';
+                
+                r.message.forEach(schedule => {
+                    const day = document.createElement('div');
+                    day.className = 'schedule-day';
+                    day.innerHTML = `
+                        <h3>${schedule.schedule_date}</h3>
+                        <div class="time-slots">
+                            <div>From: ${schedule.from_time}</div>
+                            <div>To: ${schedule.to_time}</div>
+                        </div>
+                    `;
+                    scheduleGrid.appendChild(day);
+                });
+            }
+        }
+    });
+}
+
+// Load Queue
+function loadQueue() {
+    frappe.call({
+        method: 'healthcare.healthcare.doctype.doctor_workspace_settings.doctor_workspace_settings.get_patient_queue',
+        args: { doctor: frappe.session.user },
+        callback: function(r) {
+            if (r.message) {
+                const queue = document.getElementById('patient-queue');
+                queue.innerHTML = '';
+                
+                r.message.forEach(patient => {
+                    const item = document.createElement('div');
+                    item.className = 'queue-item';
+                    item.innerHTML = `
+                        <div class="patient-info">
+                            <h4>${patient.patient_name}</h4>
+                            <div>Age: ${patient.patient_age} | Gender: ${patient.patient_gender}</div>
+                            <div>Time: ${patient.appointment_time}</div>
+                        </div>
+                        <div class="patient-status">
+                            <span class="status-badge ${patient.status.toLowerCase()}">${patient.status}</span>
+                            <button class="btn btn-primary" onclick="startAppointment('${patient.name}')">Start</button>
+                        </div>
+                    `;
+                    queue.appendChild(item);
+                });
+            }
+        }
+    });
+}
+
+// Load Team
+function loadTeam() {
+    frappe.call({
+        method: 'healthcare.healthcare.doctype.doctor_workspace_settings.doctor_workspace_settings.get_team_members',
+        args: { doctor: frappe.session.user },
+        callback: function(r) {
+            if (r.message) {
+                const team = document.getElementById('team-members');
+                team.innerHTML = '';
+                
+                r.message.forEach(member => {
+                    const card = document.createElement('div');
+                    card.className = 'team-member-card';
+                    card.innerHTML = `
+                        <h3>${member.name}</h3>
+                        <div>Role: ${member.role}</div>
+                        <div>Specialization: ${member.specialization}</div>
+                        <div>Department: ${member.department}</div>
+                        <button class="btn btn-danger" onclick="removeTeamMember('${member.team_member}')">Remove</button>
+                    `;
+                    team.appendChild(card);
+                });
+            }
+        }
+    });
+}
+
+// Add Team Member
+function showAddMemberModal() {
+    document.getElementById('add-member-modal').style.display = 'block';
+    
+    // Load doctors
+    frappe.call({
+        method: 'healthcare.healthcare.doctype.doctor.doctor.get_doctors',
+        callback: function(r) {
+            if (r.message) {
+                const select = document.getElementById('team-member');
+                select.innerHTML = '<option value="">Select Doctor</option>';
+                
+                r.message.forEach(doctor => {
+                    const option = document.createElement('option');
+                    option.value = doctor.name;
+                    option.textContent = `${doctor.first_name} ${doctor.last_name}`;
+                    select.appendChild(option);
+                });
+            }
+        }
+    });
+    
+    // Load roles
+    frappe.call({
+        method: 'healthcare.healthcare.doctype.team_role.team_role.get_roles',
+        callback: function(r) {
+            if (r.message) {
+                const select = document.getElementById('member-role');
+                select.innerHTML = '<option value="">Select Role</option>';
+                
+                r.message.forEach(role => {
+                    const option = document.createElement('option');
+                    option.value = role.name;
+                    option.textContent = role.role_name;
+                    select.appendChild(option);
+                });
+            }
+        }
+    });
+}
+
+function hideAddMemberModal() {
+    document.getElementById('add-member-modal').style.display = 'none';
+}
+
+document.getElementById('add-member-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const data = {
+        team_member: document.getElementById('team-member').value,
+        role: document.getElementById('member-role').value,
+        notes: document.getElementById('member-notes').value
+    };
+    
+    frappe.call({
+        method: 'healthcare.healthcare.doctype.doctor_workspace_settings.doctor_workspace_settings.add_team_member',
+        args: {
+            doctor: frappe.session.user,
+            team_member: data.team_member,
+            role: data.role
+        },
+        callback: function(r) {
+            if (r.message) {
+                hideAddMemberModal();
+                loadTeam();
+                frappe.show_alert({
+                    message: 'Team member added successfully',
+                    indicator: 'green'
+                });
+            }
+        }
+    });
+});
+
+// Remove Team Member
+function removeTeamMember(teamMember) {
+    if (confirm('Are you sure you want to remove this team member?')) {
+        frappe.call({
+            method: 'healthcare.healthcare.doctype.doctor_workspace_settings.doctor_workspace_settings.remove_team_member',
+            args: {
+                doctor: frappe.session.user,
+                team_member: teamMember
+            },
+            callback: function(r) {
+                if (r.message) {
+                    loadTeam();
+                    frappe.show_alert({
+                        message: 'Team member removed successfully',
+                        indicator: 'green'
+                    });
+                }
+            }
+        });
+    }
+}
+
+// Start Appointment
+function startAppointment(appointment) {
+    frappe.call({
+        method: 'healthcare.healthcare.doctype.appointment.appointment.start_appointment',
+        args: { appointment: appointment },
+        callback: function(r) {
+            if (r.message) {
+                loadQueue();
+                frappe.show_alert({
+                    message: 'Appointment started',
+                    indicator: 'green'
+                });
+            }
+        }
+    });
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    loadMetrics();
+});
+</script>
+{% endblock %} 

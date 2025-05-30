@@ -1,0 +1,188 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:PI-{####}",
+ "creation": "2024-03-19 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "insurance_details",
+  "patient",
+  "patient_name",
+  "insurance_provider",
+  "policy_number",
+  "policy_type",
+  "coverage_type",
+  "coverage_details",
+  "start_date",
+  "end_date",
+  "premium_amount",
+  "coverage_amount",
+  "deductible_amount",
+  "co_pay_percentage",
+  "status",
+  "attachments"
+ ],
+ "fields": [
+  {
+   "fieldname": "insurance_details",
+   "fieldtype": "Section Break",
+   "label": "Insurance Details"
+  },
+  {
+   "fieldname": "patient",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Patient",
+   "options": "Patient",
+   "reqd": 1
+  },
+  {
+   "fieldname": "patient_name",
+   "fieldtype": "Data",
+   "label": "Patient Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "insurance_provider",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Insurance Provider",
+   "options": "Insurance Provider",
+   "reqd": 1
+  },
+  {
+   "fieldname": "policy_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Policy Number",
+   "reqd": 1
+  },
+  {
+   "fieldname": "policy_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Policy Type",
+   "options": "Individual\nFamily\nGroup\nCorporate",
+   "reqd": 1
+  },
+  {
+   "fieldname": "coverage_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Coverage Type",
+   "options": "Basic\nComprehensive\nPremium\nSpecialized",
+   "reqd": 1
+  },
+  {
+   "fieldname": "coverage_details",
+   "fieldtype": "Table",
+   "label": "Coverage Details",
+   "options": "Insurance Coverage Detail"
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Start Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "End Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "premium_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Premium Amount",
+   "reqd": 1
+  },
+  {
+   "fieldname": "coverage_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Coverage Amount",
+   "reqd": 1
+  },
+  {
+   "fieldname": "deductible_amount",
+   "fieldtype": "Currency",
+   "label": "Deductible Amount",
+   "reqd": 1
+  },
+  {
+   "fieldname": "co_pay_percentage",
+   "fieldtype": "Percent",
+   "label": "Co-pay Percentage",
+   "reqd": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Active\nExpired\nCancelled\nPending",
+   "default": "Active"
+  },
+  {
+   "fieldname": "attachments",
+   "fieldtype": "Attach",
+   "label": "Attachments"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-03-19 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Healthcare",
+ "name": "Patient Insurance",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Healthcare Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 0,
+   "export": 0,
+   "print": 0,
+   "read": 1,
+   "report": 0,
+   "role": "Healthcare User",
+   "share": 0,
+   "write": 0
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 0,
+   "export": 0,
+   "print": 0,
+   "read": 1,
+   "report": 0,
+   "role": "Patient",
+   "share": 0,
+   "write": 0
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+} 

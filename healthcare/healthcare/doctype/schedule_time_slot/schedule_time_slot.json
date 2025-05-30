@@ -1,0 +1,76 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-03-19 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "time_slot_details",
+  "start_time",
+  "end_time",
+  "duration",
+  "max_appointments",
+  "appointments_booked",
+  "is_available"
+ ],
+ "fields": [
+  {
+   "fieldname": "time_slot_details",
+   "fieldtype": "Section Break",
+   "label": "Time Slot Details"
+  },
+  {
+   "fieldname": "start_time",
+   "fieldtype": "Time",
+   "in_list_view": 1,
+   "label": "Start Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "end_time",
+   "fieldtype": "Time",
+   "in_list_view": 1,
+   "label": "End Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "duration",
+   "fieldtype": "Int",
+   "label": "Duration (minutes)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "max_appointments",
+   "fieldtype": "Int",
+   "label": "Maximum Appointments",
+   "reqd": 1
+  },
+  {
+   "fieldname": "appointments_booked",
+   "fieldtype": "Int",
+   "label": "Appointments Booked",
+   "read_only": 1
+  },
+  {
+   "fieldname": "is_available",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Is Available",
+   "default": 1
+  }
+ ],
+ "istable": 1,
+ "links": [],
+ "modified": "2024-03-19 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Healthcare",
+ "name": "Schedule Time Slot",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+} 

@@ -1,0 +1,161 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:DWS-{####}",
+ "creation": "2024-03-19 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "workspace_settings",
+  "enable_dashboard",
+  "dashboard_layout",
+  "default_view",
+  "schedule_settings",
+  "enable_patient_queue",
+  "queue_refresh_interval",
+  "enable_performance_metrics",
+  "metrics_to_show",
+  "team_settings",
+  "enable_team_management",
+  "team_roles",
+  "notifications",
+  "enable_notifications",
+  "notification_channels",
+  "attachments"
+ ],
+ "fields": [
+  {
+   "fieldname": "workspace_settings",
+   "fieldtype": "Section Break",
+   "label": "Workspace Settings"
+  },
+  {
+   "fieldname": "enable_dashboard",
+   "fieldtype": "Check",
+   "label": "Enable Dashboard",
+   "default": 1
+  },
+  {
+   "fieldname": "dashboard_layout",
+   "fieldtype": "Select",
+   "label": "Dashboard Layout",
+   "options": "Grid\nList\nCompact",
+   "default": "Grid"
+  },
+  {
+   "fieldname": "default_view",
+   "fieldtype": "Select",
+   "label": "Default View",
+   "options": "Schedule\nQueue\nMetrics\nTeam",
+   "default": "Schedule"
+  },
+  {
+   "fieldname": "schedule_settings",
+   "fieldtype": "Section Break",
+   "label": "Schedule Settings"
+  },
+  {
+   "fieldname": "enable_patient_queue",
+   "fieldtype": "Check",
+   "label": "Enable Patient Queue",
+   "default": 1
+  },
+  {
+   "fieldname": "queue_refresh_interval",
+   "fieldtype": "Int",
+   "label": "Queue Refresh Interval (minutes)",
+   "default": 5
+  },
+  {
+   "fieldname": "enable_performance_metrics",
+   "fieldtype": "Section Break",
+   "label": "Performance Metrics"
+  },
+  {
+   "fieldname": "metrics_to_show",
+   "fieldtype": "MultiSelect",
+   "label": "Metrics to Show",
+   "options": "Appointments Completed\nPatient Satisfaction\nWait Time\nRevenue\nTeam Performance",
+   "default": "Appointments Completed\nPatient Satisfaction"
+  },
+  {
+   "fieldname": "team_settings",
+   "fieldtype": "Section Break",
+   "label": "Team Settings"
+  },
+  {
+   "fieldname": "enable_team_management",
+   "fieldtype": "Check",
+   "label": "Enable Team Management",
+   "default": 1
+  },
+  {
+   "fieldname": "team_roles",
+   "fieldtype": "Table",
+   "label": "Team Roles",
+   "options": "Team Role"
+  },
+  {
+   "fieldname": "notifications",
+   "fieldtype": "Section Break",
+   "label": "Notifications"
+  },
+  {
+   "fieldname": "enable_notifications",
+   "fieldtype": "Check",
+   "label": "Enable Notifications",
+   "default": 1
+  },
+  {
+   "fieldname": "notification_channels",
+   "fieldtype": "MultiSelect",
+   "label": "Notification Channels",
+   "options": "Email\nSMS\nIn-App\nDesktop",
+   "default": "Email\nIn-App"
+  },
+  {
+   "fieldname": "attachments",
+   "fieldtype": "Attach",
+   "label": "Attachments"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-03-19 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Healthcare",
+ "name": "Doctor Workspace Settings",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Healthcare Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 0,
+   "export": 0,
+   "print": 0,
+   "read": 1,
+   "report": 0,
+   "role": "Healthcare User",
+   "share": 0,
+   "write": 0
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+} 

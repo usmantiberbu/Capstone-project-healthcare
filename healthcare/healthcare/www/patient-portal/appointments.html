@@ -1,0 +1,387 @@
+{% extends "templates/web.html" %}
+
+{% block page_content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Book an Appointment</h1>
+            
+            <!-- Appointment Booking Form -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form id="appointment-form">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="department">Department</label>
+                                    <select class="form-control" id="department" name="department" required>
+                                        <option value="">Select Department</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="doctor">Doctor</label>
+                                    <select class="form-control" id="doctor" name="doctor">
+                                        <option value="">Select Doctor</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="appointment-type">Appointment Type</label>
+                                    <select class="form-control" id="appointment-type" name="appointment_type" required>
+                                        <option value="">Select Type</option>
+                                        <option value="New Visit">New Visit</option>
+                                        <option value="Follow Up">Follow Up</option>
+                                        <option value="Consultation">Consultation</option>
+                                        <option value="Procedure">Procedure</option>
+                                        <option value="Emergency">Emergency</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="appointment-date">Preferred Date</label>
+                                    <input type="date" class="form-control" id="appointment-date" name="appointment_date" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="appointment-time">Preferred Time</label>
+                                    <select class="form-control" id="appointment-time" name="appointment_time" required>
+                                        <option value="">Select Time</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="notes">Additional Notes</label>
+                                    <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-primary">Book Appointment</button>
+                                <button type="button" class="btn btn-secondary" id="add-to-waitlist">Add to Waitlist</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- My Appointments -->
+            <div class="card">
+                <div class="card-body">
+                    <h2>My Appointments</h2>
+                    <div class="table-responsive">
+                        <table class="table" id="appointments-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Doctor</th>
+                                    <th>Department</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Appointments will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Appointment Details Modal -->
+<div class="modal fade" id="appointment-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Appointment Details</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Appointment details will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" id="cancel-appointment">Cancel Appointment</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block style %}
+<style>
+    .card {
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    .table th {
+        background-color: #f8f9fa;
+    }
+    
+    .btn {
+        margin-right: 10px;
+    }
+    
+    .status-badge {
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 12px;
+    }
+    
+    .status-scheduled { background-color: #ffd700; }
+    .status-confirmed { background-color: #90EE90; }
+    .status-completed { background-color: #87CEEB; }
+    .status-cancelled { background-color: #FFB6C1; }
+</style>
+{% endblock %}
+
+{% block script %}
+<script>
+    frappe.ready(function() {
+        // Load departments
+        loadDepartments();
+        
+        // Event listeners
+        $('#department').on('change', function() {
+            loadDoctors($(this).val());
+        });
+        
+        $('#doctor, #appointment-date').on('change', function() {
+            loadAvailableSlots();
+        });
+        
+        $('#appointment-form').on('submit', function(e) {
+            e.preventDefault();
+            bookAppointment();
+        });
+        
+        $('#add-to-waitlist').on('click', function() {
+            addToWaitlist();
+        });
+        
+        // Load appointments
+        loadAppointments();
+    });
+    
+    function loadDepartments() {
+        frappe.call({
+            method: 'healthcare.healthcare.doctype.medical_department.medical_department.get_departments',
+            callback: function(response) {
+                let departments = response.message;
+                let options = '<option value="">Select Department</option>';
+                
+                departments.forEach(function(dept) {
+                    options += `<option value="${dept.name}">${dept.department_name}</option>`;
+                });
+                
+                $('#department').html(options);
+            }
+        });
+    }
+    
+    function loadDoctors(department) {
+        if (!department) return;
+        
+        frappe.call({
+            method: 'healthcare.healthcare.doctype.doctor.doctor.get_doctors',
+            args: {
+                department: department
+            },
+            callback: function(response) {
+                let doctors = response.message;
+                let options = '<option value="">Select Doctor</option>';
+                
+                doctors.forEach(function(doc) {
+                    options += `<option value="${doc.name}">${doc.first_name} ${doc.last_name}</option>`;
+                });
+                
+                $('#doctor').html(options);
+            }
+        });
+    }
+    
+    function loadAvailableSlots() {
+        let doctor = $('#doctor').val();
+        let date = $('#appointment-date').val();
+        
+        if (!doctor || !date) return;
+        
+        frappe.call({
+            method: 'healthcare.healthcare.doctype.appointment.appointment.get_available_slots',
+            args: {
+                doctor: doctor,
+                date: date
+            },
+            callback: function(response) {
+                let slots = response.message;
+                let options = '<option value="">Select Time</option>';
+                
+                slots.forEach(function(slot) {
+                    options += `<option value="${slot}">${slot}</option>`;
+                });
+                
+                $('#appointment-time').html(options);
+            }
+        });
+    }
+    
+    function bookAppointment() {
+        let formData = {
+            department: $('#department').val(),
+            doctor: $('#doctor').val(),
+            appointment_type: $('#appointment-type').val(),
+            appointment_date: $('#appointment-date').val(),
+            appointment_time: $('#appointment-time').val(),
+            notes: $('#notes').val()
+        };
+        
+        frappe.call({
+            method: 'healthcare.healthcare.doctype.appointment.appointment.create_appointment',
+            args: {
+                data: formData
+            },
+            callback: function(response) {
+                if (response.message) {
+                    frappe.show_alert({
+                        message: 'Appointment booked successfully',
+                        indicator: 'green'
+                    });
+                    loadAppointments();
+                    $('#appointment-form')[0].reset();
+                }
+            }
+        });
+    }
+    
+    function addToWaitlist() {
+        let formData = {
+            department: $('#department').val(),
+            doctor: $('#doctor').val(),
+            preferred_date: $('#appointment-date').val(),
+            preferred_time: $('#appointment-time').val(),
+            notes: $('#notes').val()
+        };
+        
+        frappe.call({
+            method: 'healthcare.healthcare.doctype.appointment_waitlist.appointment_waitlist.create_waitlist',
+            args: {
+                data: formData
+            },
+            callback: function(response) {
+                if (response.message) {
+                    frappe.show_alert({
+                        message: 'Added to waitlist successfully',
+                        indicator: 'green'
+                    });
+                    $('#appointment-form')[0].reset();
+                }
+            }
+        });
+    }
+    
+    function loadAppointments() {
+        frappe.call({
+            method: 'healthcare.healthcare.doctype.appointment.appointment.get_patient_appointments',
+            callback: function(response) {
+                let appointments = response.message;
+                let html = '';
+                
+                appointments.forEach(function(apt) {
+                    html += `
+                        <tr>
+                            <td>${apt.appointment_date}</td>
+                            <td>${apt.appointment_time}</td>
+                            <td>${apt.doctor_name}</td>
+                            <td>${apt.department}</td>
+                            <td>${apt.appointment_type}</td>
+                            <td><span class="status-badge status-${apt.status.toLowerCase()}">${apt.status}</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-info" onclick="viewAppointment('${apt.name}')">View</button>
+                                ${apt.status === 'Scheduled' ? `
+                                    <button class="btn btn-sm btn-danger" onclick="cancelAppointment('${apt.name}')">Cancel</button>
+                                ` : ''}
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                $('#appointments-table tbody').html(html);
+            }
+        });
+    }
+    
+    function viewAppointment(appointment) {
+        frappe.call({
+            method: 'healthcare.healthcare.doctype.appointment.appointment.get_appointment_details',
+            args: {
+                appointment: appointment
+            },
+            callback: function(response) {
+                let apt = response.message;
+                let html = `
+                    <div class="appointment-details">
+                        <p><strong>Date:</strong> ${apt.appointment_date}</p>
+                        <p><strong>Time:</strong> ${apt.appointment_time}</p>
+                        <p><strong>Doctor:</strong> ${apt.doctor_name}</p>
+                        <p><strong>Department:</strong> ${apt.department}</p>
+                        <p><strong>Type:</strong> ${apt.appointment_type}</p>
+                        <p><strong>Status:</strong> ${apt.status}</p>
+                        <p><strong>Notes:</strong> ${apt.notes || 'None'}</p>
+                    </div>
+                `;
+                
+                $('#appointment-modal .modal-body').html(html);
+                $('#appointment-modal').modal('show');
+            }
+        });
+    }
+    
+    function cancelAppointment(appointment) {
+        frappe.confirm(
+            'Are you sure you want to cancel this appointment?',
+            function() {
+                frappe.call({
+                    method: 'healthcare.healthcare.doctype.appointment.appointment.cancel_appointment',
+                    args: {
+                        appointment: appointment
+                    },
+                    callback: function(response) {
+                        if (response.message) {
+                            frappe.show_alert({
+                                message: 'Appointment cancelled successfully',
+                                indicator: 'green'
+                            });
+                            loadAppointments();
+                        }
+                    }
+                });
+            }
+        );
+    }
+</script>
+{% endblock %} 
