@@ -1,13 +1,28 @@
 import frappe
 from frappe.model.document import Document
+from frappe import _
 
 class Department(Document):
     def validate(self):
+        self.validate_department_name()
+        self.validate_head_doctor()
         self.validate_department_code()
         self.validate_head_of_department()
         self.validate_contact()
         self.validate_operating_hours()
         self.validate_capacity()
+    
+    def validate_department_name(self):
+        if not self.department_name:
+            frappe.throw(_("Department name is required"))
+        # Check for duplicate department names
+        existing = frappe.get_all("Department", filters={"department_name": self.department_name, "name": ["!=", self.name]}, fields=["name"])
+        if existing:
+            frappe.throw(_("Department with name {0} already exists").format(self.department_name))
+    
+    def validate_head_doctor(self):
+        if self.head_doctor and not frappe.db.exists("Doctor", self.head_doctor):
+            frappe.throw(_("Head doctor {0} does not exist").format(self.head_doctor))
     
     def validate_department_code(self):
         if self.department_code:
@@ -80,4 +95,20 @@ class Department(Document):
         })
         
         available_slots = self.capacity - total_appointments
-        return max(0, available_slots) 
+        return max(0, available_slots)
+
+@frappe.whitelist(allow_guest=True)
+def api_create_department(department_name, head_doctor=None):
+    if not department_name:
+        return {"error": "Department name is required"}
+    if head_doctor and not frappe.db.exists("Doctor", head_doctor):
+        return {"error": f"Head doctor {head_doctor} does not exist"}
+    if frappe.db.exists("Department", {"department_name": department_name}):
+        return {"error": f"Department {department_name} already exists"}
+    doc = frappe.get_doc({
+        "doctype": "Department",
+        "department_name": department_name,
+        "head_doctor": head_doctor
+    })
+    doc.insert(ignore_permissions=True)
+    return {"success": True, "department": doc.name} 

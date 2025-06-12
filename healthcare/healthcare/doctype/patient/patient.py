@@ -41,6 +41,7 @@ class Patient(Document):
 
 @frappe.whitelist(allow_guest=True)
 def api_create_patient():
+    frappe.local.conf.disable_csrf = True
     try:
         # Get the request data
         data = frappe.form_dict
