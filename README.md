@@ -33,6 +33,7 @@ Pre-commit is configured to use the following tools for checking and formatting 
 <img src="https://github.com/usmantiberbu/Capstone-project-healthcare/blob/main/screenshoots/15852b39-ea31-4b83-8872-c42d83db3f0f.jpeg">
 <img src="https://github.com/usmantiberbu/Capstone-project-healthcare/blob/main/screenshoots/a0c3c420-efa2-4d05-a3fc-b94b484b185b.jpeg">
 <img src="https://github.com/usmantiberbu/Capstone-project-healthcare/blob/main/screenshoots/c66003f8-668f-4621-a965-051b94959916.jpeg">
+<img src="https://github.com/usmantiberbu/Capstone-project-healthcare/blob/main/screenshoots/645a4470-cdaf-4ee0-a26c-a3493b2f350e.jpeg">
 
 This app can use GitHub Actions for CI. The following workflows are configured:
 
