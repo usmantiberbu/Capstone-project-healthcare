@@ -8,11 +8,12 @@
  "field_order": [
   "patient",
   "date",
+  "type",
   "description",
-  "diagnosis",
-  "treatment",
-  "prescription",
-  "attachments"
+  "doctor",
+  "department",
+  "attachments",
+  "notes"
  ],
  "fields": [
   {
@@ -31,30 +32,41 @@
    "reqd": 1
   },
   {
+   "fieldname": "type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Type",
+   "options": "Visit\nConsultation\nProcedure\nTest\nPrescription\nOther",
+   "reqd": 1
+  },
+  {
    "fieldname": "description",
    "fieldtype": "Small Text",
+   "in_list_view": 1,
    "label": "Description",
    "reqd": 1
   },
   {
-   "fieldname": "diagnosis",
-   "fieldtype": "Text Editor",
-   "label": "Diagnosis"
+   "fieldname": "doctor",
+   "fieldtype": "Link",
+   "label": "Doctor",
+   "options": "Doctor"
   },
   {
-   "fieldname": "treatment",
-   "fieldtype": "Text Editor",
-   "label": "Treatment"
-  },
-  {
-   "fieldname": "prescription",
-   "fieldtype": "Text Editor",
-   "label": "Prescription"
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "label": "Department",
+   "options": "Medical Department"
   },
   {
    "fieldname": "attachments",
    "fieldtype": "Attach",
    "label": "Attachments"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Text Editor",
+   "label": "Notes"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -81,14 +93,14 @@
   {
    "create": 1,
    "delete": 0,
-   "email": 1,
-   "export": 1,
-   "print": 1,
+   "email": 0,
+   "export": 0,
+   "print": 0,
    "read": 1,
-   "report": 1,
+   "report": 0,
    "role": "Healthcare User",
    "share": 0,
-   "write": 1
+   "write": 0
   },
   {
    "create": 0,
@@ -106,5 +118,6 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
- "track_changes": 1
+ "track_changes": 1,
+ "istable": 1
 } 

@@ -1,169 +1,172 @@
 {
- "actions": [],
- "allow_rename": 1,
- "autoname": "format:PA-{####}",
- "creation": "2024-03-19 10:00:00.000000",
- "doctype": "DocType",
- "editable_grid": 1,
- "engine": "InnoDB",
- "field_order": [
-  "personal_details",
-  "first_name",
-  "last_name",
-  "gender",
-  "date_of_birth",
-  "blood_group",
-  "contact_details",
-  "mobile_no",
-  "email",
-  "address",
-  "insurance_details",
-  "insurance_provider",
-  "insurance_number",
-  "medical_history",
-  "medical_history_table",
-  "attachments"
- ],
- "fields": [
-  {
-   "fieldname": "personal_details",
-   "fieldtype": "Section Break",
-   "label": "Personal Details"
-  },
-  {
-   "fieldname": "first_name",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "First Name",
-   "reqd": 1
-  },
-  {
-   "fieldname": "last_name",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Last Name",
-   "reqd": 1
-  },
-  {
-   "fieldname": "gender",
-   "fieldtype": "Select",
-   "label": "Gender",
-   "options": "Male\nFemale\nOther",
-   "reqd": 1
-  },
-  {
-   "fieldname": "date_of_birth",
-   "fieldtype": "Date",
-   "label": "Date of Birth",
-   "reqd": 1
-  },
-  {
-   "fieldname": "blood_group",
-   "fieldtype": "Select",
-   "label": "Blood Group",
-   "options": "A+\nA-\nB+\nB-\nAB+\nAB-\nO+\nO-"
-  },
-  {
-   "fieldname": "contact_details",
-   "fieldtype": "Section Break",
-   "label": "Contact Details"
-  },
-  {
-   "fieldname": "mobile_no",
-   "fieldtype": "Phone",
-   "label": "Mobile Number",
-   "reqd": 1
-  },
-  {
-   "fieldname": "email",
-   "fieldtype": "Email",
-   "label": "Email Address"
-  },
-  {
-   "fieldname": "address",
-   "fieldtype": "Small Text",
-   "label": "Address"
-  },
-  {
-   "fieldname": "insurance_details",
-   "fieldtype": "Section Break",
-   "label": "Insurance Details"
-  },
-  {
-   "fieldname": "insurance_provider",
-   "fieldtype": "Data",
-   "label": "Insurance Provider"
-  },
-  {
-   "fieldname": "insurance_number",
-   "fieldtype": "Data",
-   "label": "Insurance Number"
-  },
-  {
-   "fieldname": "medical_history",
-   "fieldtype": "Section Break",
-   "label": "Medical History"
-  },
-  {
-   "fieldname": "medical_history_table",
-   "fieldtype": "Table",
-   "label": "Medical History",
-   "options": "Patient Medical History"
-  },
-  {
-   "fieldname": "attachments",
-   "fieldtype": "Attach",
-   "label": "Attachments"
-  }
- ],
- "index_web_pages_for_search": 1,
- "links": [],
- "modified": "2024-03-19 10:00:00.000000",
- "modified_by": "Administrator",
- "module": "Healthcare",
- "name": "Patient",
- "naming_rule": "By fieldname",
- "owner": "Administrator",
- "permissions": [
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "Healthcare Manager",
-   "share": 1,
-   "write": 1
-  },
-  {
-   "create": 1,
-   "delete": 0,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "Healthcare User",
-   "share": 0,
-   "write": 1
-  },
-  {
-   "create": 0,
-   "delete": 0,
-   "email": 0,
-   "export": 0,
-   "print": 0,
-   "read": 1,
-   "report": 0,
-   "role": "Patient",
-   "share": 0,
-   "write": 0
-  }
- ],
- "sort_field": "modified",
- "sort_order": "DESC",
- "states": [],
- "track_changes": 1
-} 
+    "actions": [],
+    "allow_rename": 1,
+    "autoname": "format:PA-{####}",
+    "creation": "2024-03-19 10:00:00.000000",
+    "doctype": "DocType",
+    "editable_grid": 1,
+    "engine": "InnoDB",
+    "field_order": [
+     "personal_details",
+     "first_name",
+     "last_name",
+     "gender",
+     "date_of_birth",
+     "blood_group",
+     "contact_details",
+     "mobile_no",
+     "email",
+     "address",
+     "insurance_details",
+     "insurance_provider",
+     "insurance_number",
+     "medical_history",
+     "medical_history_table",
+     "attachments"
+    ],
+    "fields": [
+     {
+      "fieldname": "personal_details",
+      "fieldtype": "Section Break",
+      "label": "Personal Details"
+     },
+     {
+      "fieldname": "first_name",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "First Name",
+      "reqd": 1
+     },
+     {
+      "fieldname": "last_name",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Last Name",
+      "reqd": 1
+     },
+     {
+      "fieldname": "gender",
+      "fieldtype": "Select",
+      "label": "Gender",
+      "options": "Male\nFemale\nOther",
+      "reqd": 1
+     },
+     {
+      "fieldname": "date_of_birth",
+      "fieldtype": "Date",
+      "label": "Date of Birth",
+      "reqd": 1
+     },
+     {
+      "fieldname": "blood_group",
+      "fieldtype": "Select",
+      "label": "Blood Group",
+      "options": "A+\nA-\nB+\nB-\nAB+\nAB-\nO+\nO-"
+     },
+     {
+      "fieldname": "contact_details",
+      "fieldtype": "Section Break",
+      "label": "Contact Details"
+     },
+     {
+      "fieldname": "mobile_no",
+      "fieldtype": "Phone",
+      "label": "Mobile Number",
+      "reqd": 1
+     },
+     {
+        "fieldname": "email",
+        "fieldtype": "Email",
+        "label": "Email Address",
+        "reqd": 1,
+        "unique": 1,
+        "in_list_view": 1
+      },
+     {
+      "fieldname": "address",
+      "fieldtype": "Small Text",
+      "label": "Address"
+     },
+     {
+      "fieldname": "insurance_details",
+      "fieldtype": "Section Break",
+      "label": "Insurance Details"
+     },
+     {
+      "fieldname": "insurance_provider",
+      "fieldtype": "Data",
+      "label": "Insurance Provider"
+     },
+     {
+      "fieldname": "insurance_number",
+      "fieldtype": "Data",
+      "label": "Insurance Number"
+     },
+     {
+      "fieldname": "medical_history",
+      "fieldtype": "Section Break",
+      "label": "Medical History"
+     },
+     {
+      "fieldname": "medical_history_table",
+      "fieldtype": "Table",
+      "label": "Medical History",
+      "options": "Patient Medical History"
+     },
+     {
+      "fieldname": "attachments",
+      "fieldtype": "Attach",
+      "label": "Attachments"
+     }
+    ],
+    "index_web_pages_for_search": 1,
+    "links": [],
+    "modified": "2024-03-19 10:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Healthcare",
+    "name": "Patient",
+    "naming_rule": "By fieldname",
+    "owner": "Administrator",
+    "permissions": [
+     {
+      "create": 1,
+      "delete": 1,
+      "email": 1,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "Healthcare Manager",
+      "share": 1,
+      "write": 1
+     },
+     {
+      "create": 1,
+      "delete": 0,
+      "email": 1,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "Healthcare User",
+      "share": 0,
+      "write": 1
+     },
+     {
+      "create": 0,
+      "delete": 0,
+      "email": 0,
+      "export": 0,
+      "print": 0,
+      "read": 1,
+      "report": 0,
+      "role": "Patient",
+      "share": 0,
+      "write": 0
+     }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": [],
+    "track_changes": 1
+   } 

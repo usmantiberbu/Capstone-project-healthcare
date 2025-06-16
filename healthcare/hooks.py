@@ -64,11 +64,32 @@ app_license = "mit"
 # 	"Role": "home_page"
 # }
 
-# Generators
-# ----------
+# Website Routes
+# ------------------
+from healthcare.routes import get_portal_routes, after_install
 
-# automatically create page for each record of this doctype
-# website_generators = ["Web Page"]
+# Initialize website routes on install
+after_install = "healthcare.routes.after_install"
+
+# Website Context
+# ------------------
+website_context = {
+    "home_page": "patient-portal",
+    "brand_html": "Healthcare",
+    "top_bar_items": [
+        {"label": "Home", "url": "/patient-portal"},
+        {"label": "Register", "url": "/patient-portal/registration"},
+        {"label": "Login", "url": "/patient-portal/login"}
+    ]
+}
+
+# Website Routes Configuration
+# ------------------
+website_routes = get_portal_routes()
+
+# Website Generators
+# ------------------
+website_generators = ["Web Page"]
 
 # Jinja
 # ----------

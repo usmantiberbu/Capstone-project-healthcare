@@ -430,4 +430,25 @@ class Doctor(Document):
             'working_hours': self.working_hours,
             'leave_records': self.leave_records
         }
-        return availability 
+        return availability
+
+@frappe.whitelist(allow_guest=False)
+def api_create_doctor(first_name, last_name, gender, department, specialization, email=None, phone=None):
+    if not (first_name and last_name and gender and department and specialization):
+        return {"error": "Missing required fields"}
+    if not frappe.db.exists("Department", department):
+        return {"error": f"Department {department} does not exist"}
+    if email and frappe.db.exists("Doctor", {"email": email}):
+        return {"error": "Email already registered"}
+    doc = frappe.get_doc({
+        "doctype": "Doctor",
+        "first_name": first_name,
+        "last_name": last_name,
+        "gender": gender,
+        "department": department,
+        "specialization": specialization,
+        "email": email,
+        "phone": phone
+    })
+    doc.insert(ignore_permissions=True)
+    return {"success": True, "doctor": doc.name} 
